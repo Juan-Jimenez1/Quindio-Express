@@ -95,7 +95,7 @@ public class  ListaSimple<T> implements Coleccion<T> {
     }
 
     @Override
-    public int tamaño() {
+    public int tamanio() {
         return cantidad;
     }
 

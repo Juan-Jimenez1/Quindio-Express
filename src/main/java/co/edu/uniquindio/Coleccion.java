@@ -9,7 +9,7 @@ public interface Coleccion<T> extends Iterable<T> {
 
     T obtener(int indice);
 
-    int tamaño();
+    int tamanio();
 
     boolean estaVacia();
 }
