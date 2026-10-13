@@ -11,7 +11,7 @@ public class Main {
         registrarRepartidores(sistema);
         registrarPaquetes(sistema);
 
-        // ==================== RESUMEN ====================
+        //  RESUMEN INFORMAION DEL SISTEMA
 
         System.out.println("\n===== RESUMEN DEL SISTEMA =====");
         System.out.println("Cantidad de paquetes: "
@@ -22,7 +22,7 @@ public class Main {
         System.out.println("\n===== ORDEN DE REGISTRO (primeros 5) =====");
         imprimirPrimeros(sistema.obtenerOrdenRegistro(), 5);
 
-        // ==================== DESTINOS ====================
+        //  DESTINOS
 
         System.out.println("\n===== DESTINOS SIN DUPLICADOS (HashSet) =====");
         System.out.println(sistema.obtenerDestinosRegistrados());
@@ -39,7 +39,7 @@ public class Main {
             System.out.println();
         }
 
-        // ==================== CONSULTAS ====================
+        //  CONSULTAS
 
         System.out.println("\n===== BUSCAR PAQUETE (HashMap) =====");
         System.out.println(sistema.buscarPaquete("PQ731"));
@@ -48,7 +48,7 @@ public class Main {
         System.out.println("\n===== BUSCAR REPARTIDOR =====");
         System.out.println(sistema.buscarRepartidor("R001"));
 
-        // ==================== ORDENAMIENTOS ====================
+        // ORDENAMIENTOS
 
         System.out.println("\n===== ORDEN POR CODIGO (primeros 5) =====");
         imprimirPrimeros(sistema.obtenerPaquetesOrdenadosPorCodigo(), 5);
@@ -70,12 +70,13 @@ public class Main {
         imprimirPrimeros(
                 sistema.ordenarPaquetes(ComparadoresPaquete.POR_TIEMPO), 5);
 
-        // ==================== RECURSIVIDAD ====================
+        //  RECURSIVIDAD
 
         System.out.println("\n===== PESO TOTAL POR DESTINO =====");
         for (Zona zona : sistema.obtenerDestinos()) {
-            System.out.println(zona + ": "
-                    + sistema.calcularPesoTotalPorDestino(zona) + " kg");
+            System.out.println(
+                    zona + ": " + String.format("%.2f", sistema.calcularPesoTotalPorDestino(zona)) + " kg"
+            );
         }
 
         System.out.println("\n===== CONTEO POR PRIORIDAD MINIMA =====");
@@ -84,12 +85,12 @@ public class Main {
         System.out.println("Prioridad minima TRES: "
                 + sistema.contarPaquetesConPrioridadMinima(Prioridad.TRES));
 
-        // ==================== DIVIDE Y VENCERAS ====================
+        //  DIVIDE Y VENCERAS
 
         System.out.println("\n===== PAQUETE DE MAYOR PESO =====");
         System.out.println(sistema.obtenerPaqueteDeMayorPeso());
 
-        // ==================== COLA FIFO ====================
+        //  COLA FIFO
 
         System.out.println("\n===== SIGUIENTE POR LLEGADA =====");
         System.out.println(sistema.consultarSiguientePorLlegada());
@@ -98,7 +99,7 @@ public class Main {
         Paquete atendidoFifo = sistema.atenderSiguientePorLlegada();
         System.out.println("Atendido: " + atendidoFifo);
 
-        // ==================== DESPACHO PRIORITARIO ====================
+        // DESPACHO PRIORITARIO
 
         System.out.println("\n===== DESPACHO POR PRIORIDAD =====");
         System.out.println("Siguiente: "
@@ -110,7 +111,7 @@ public class Main {
         System.out.println("Despachado 1: " + despachado1);
         System.out.println("Despachado 2: " + despachado2);
 
-        // ==================== HISTORIAL ====================
+        //  HISTORIAL
 
         System.out.println("\n===== HISTORIAL ANTES DE CONFIRMAR =====");
         sistema.mostrarHistorialEntregas();
@@ -140,17 +141,17 @@ public class Main {
         sistema.liberarRepartidor("R001");
         System.out.println(sistema.buscarRepartidor("R001"));
 
-        // ==================== DESPACHO SIN REPARTIDOR ====================
+        // DESPACHO SIN REPARTIDOR
 
         System.out.println("\n===== DESPACHO SIN REPARTIDOR DISPONIBLE =====");
         probarSinRepartidorDisponible();
 
-        // ==================== VALIDACIONES ====================
+        // VALIDACIONES
 
         System.out.println("\n===== VALIDACIONES =====");
         probarValidaciones(sistema);
 
-        // ==================== LISTA PROPIA ====================
+        // LISTA PROPIA
 
         System.out.println("\n===== PRUEBAS DE LISTA PROPIA =====");
         probarListaSimple();

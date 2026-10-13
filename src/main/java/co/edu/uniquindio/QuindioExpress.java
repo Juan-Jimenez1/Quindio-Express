@@ -1,5 +1,7 @@
 package co.edu.uniquindio;
 
+import co.edu.uniquindio.Paquete;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,6 +14,11 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Gestiona el sistema de distribución QuindioExpress, incluyendo
+ * el registro de paquetes y repartidores, los despachos, las
+ * entregas y el historial de paquetes entregados.
+ */
 public class QuindioExpress {
 
     private final Map<String, Paquete> paquetesPorCodigo;
@@ -36,6 +43,10 @@ public class QuindioExpress {
     // Historial en el orden real de confirmación de las entregas.
     private final ListaSimple<Paquete> historialEntregas;
 
+    /**
+     * Inicializa las colecciones utilizadas para gestionar
+     * los paquetes, repartidores, destinos y entregas.
+     */
     public QuindioExpress() {
         paquetesPorCodigo = new HashMap<>();
         repartidoresPorId = new HashMap<>();
@@ -60,6 +71,12 @@ public class QuindioExpress {
 
     //Registro
 
+    /**
+     * Registra un paquete y lo agrega a las colecciones
+     * necesarias para su consulta y despacho.
+     *
+     * @param paquete paquete que se desea registrar.
+     */
     public void registrarPaquete(Paquete paquete) {
         if (paquete == null) {
             throw new IllegalArgumentException(
@@ -88,6 +105,11 @@ public class QuindioExpress {
                 .add(paquete);
     }
 
+    /**
+     * Registra un repartidor utilizando su identificación.
+     *
+     * @param repartidor repartidor que se desea registrar.
+     */
     public void registrarRepartidor(Repartidor repartidor) {
         if (repartidor == null) {
             throw new IllegalArgumentException(
@@ -107,8 +129,14 @@ public class QuindioExpress {
         repartidoresPorId.put(id, repartidor);
     }
 
-    //Consultas
+    // Consultas
 
+    /**
+     * Busca un paquete por su código.
+     *
+     * @param codigo código del paquete que se desea buscar.
+     * @return paquete encontrado o null si no existe.
+     */
     public Paquete buscarPaquete(String codigo) {
         if (codigo == null) {
             return null;
@@ -117,6 +145,12 @@ public class QuindioExpress {
         return paquetesPorCodigo.get(codigo);
     }
 
+    /**
+     * Busca un repartidor por su identificación.
+     *
+     * @param identificacion identificación del repartidor.
+     * @return repartidor encontrado o null si no existe.
+     */
     public Repartidor buscarRepartidor(String identificacion) {
         if (identificacion == null) {
             return null;
@@ -125,22 +159,48 @@ public class QuindioExpress {
         return repartidoresPorId.get(identificacion);
     }
 
+    /**
+     * Retorna la cantidad de paquetes registrados.
+     *
+     * @return número total de paquetes.
+     */
     public int cantidadPaquetes() {
         return paquetesPorCodigo.size();
     }
 
+    /**
+     * Retorna la cantidad de repartidores registrados.
+     *
+     * @return número total de repartidores.
+     */
     public int cantidadRepartidores() {
         return repartidoresPorId.size();
     }
 
+    /**
+     * Retorna los destinos registrados sin duplicados y ordenados.
+     *
+     * @return conjunto de destinos ordenados.
+     */
     public Set<Zona> obtenerDestinos() {
         return new TreeSet<>(destinosOrdenados);
     }
 
+    /**
+     * Retorna los destinos registrados sin duplicados.
+     *
+     * @return conjunto de destinos registrados.
+     */
     public Set<Zona> obtenerDestinosRegistrados() {
         return new HashSet<>(destinos);
     }
 
+    /**
+     * Obtiene los paquetes correspondientes a un destino.
+     *
+     * @param destino zona de destino que se desea consultar.
+     * @return lista de paquetes del destino.
+     */
     public List<Paquete> obtenerPaquetesPorDestino(Zona destino) {
         List<Paquete> paquetes = paquetesPorDestino.get(destino);
 
@@ -151,17 +211,32 @@ public class QuindioExpress {
         return new ArrayList<>(paquetes);
     }
 
-    // Devuelve una copia: modificarla no altera el registro original.
+    /**
+     * Retorna una copia de los paquetes en su orden de registro.
+     *
+     * @return lista de paquetes registrados.
+     */
     public List<Paquete> obtenerOrdenRegistro() {
         return new ArrayList<>(ordenRegistro);
     }
 
-    //Cola FIFO
+    // Cola FIFO
 
+    /**
+     * Consulta el siguiente paquete pendiente según su orden de llegada.
+     *
+     * @return siguiente paquete o null si la cola está vacía.
+     */
     public Paquete consultarSiguientePorLlegada() {
         return paquetesPorLlegada.peek();
     }
 
+    /**
+     * Atiende el siguiente paquete por orden de llegada si existe
+     * un repartidor disponible para su destino.
+     *
+     * @return paquete atendido o null si no puede atenderse.
+     */
     public Paquete atenderSiguientePorLlegada() {
         Paquete paquete = paquetesPorLlegada.peek();
 
@@ -185,14 +260,25 @@ public class QuindioExpress {
         return paquete;
     }
 
-    //Prioridad
+    // Prioridad
 
+    /**
+     * Consulta el paquete que ocupa la primera posición
+     * según los criterios de prioridad establecidos.
+     *
+     * @return siguiente paquete prioritario o null si no hay pendientes.
+     */
     public Paquete consultarSiguientePorPrioridad() {
         return paquetesPorPrioridad.peek();
     }
 
-    //Ordenamientos
+    // Ordenamientos
 
+    /**
+     * Retorna los paquetes ordenados por código.
+     *
+     * @return lista de paquetes ordenados por código.
+     */
     public List<Paquete> obtenerPaquetesOrdenadosPorCodigo() {
         List<Paquete> resultado =
                 new ArrayList<>(ordenRegistro);
@@ -202,6 +288,12 @@ public class QuindioExpress {
         return resultado;
     }
 
+    /**
+     * Ordena una copia de los paquetes mediante el comparador indicado.
+     *
+     * @param comparador criterio de ordenamiento.
+     * @return lista de paquetes ordenados.
+     */
     public List<Paquete> ordenarPaquetes(
             Comparator<Paquete> comparador
     ) {
@@ -219,8 +311,14 @@ public class QuindioExpress {
         return resultado;
     }
 
-    //Busqueda Binaria
+    // Búsqueda binaria
 
+    /**
+     * Busca un paquete por código mediante búsqueda binaria.
+     *
+     * @param codigo código del paquete que se desea buscar.
+     * @return paquete encontrado o null si no existe.
+     */
     public Paquete busquedaBinariaPorCodigo(String codigo) {
         if (codigo == null) {
             return null;
@@ -254,8 +352,15 @@ public class QuindioExpress {
         return null;
     }
 
-    //Recursividad
+    // Recursividad
 
+    /**
+     * Calcula el peso total de los paquetes de un destino
+     * mediante un método recursivo.
+     *
+     * @param destino zona que se desea consultar.
+     * @return peso total de los paquetes del destino.
+     */
     public double calcularPesoTotalPorDestino(Zona destino) {
         List<Paquete> paquetes = paquetesPorDestino.get(destino);
 
@@ -266,6 +371,13 @@ public class QuindioExpress {
         return calcularPesoRecursivo(paquetes, 0);
     }
 
+    /**
+     * Suma recursivamente los pesos de los paquetes de una lista.
+     *
+     * @param paquetes lista de paquetes.
+     * @param indice posición desde la que se inicia la suma.
+     * @return suma de los pesos restantes de la lista.
+     */
     private double calcularPesoRecursivo(
             List<Paquete> paquetes,
             int indice
@@ -278,6 +390,13 @@ public class QuindioExpress {
                 + calcularPesoRecursivo(paquetes, indice + 1);
     }
 
+    /**
+     * Cuenta los paquetes cuya prioridad es igual o superior
+     * a la prioridad mínima indicada.
+     *
+     * @param prioridadMinima prioridad mínima requerida.
+     * @return cantidad de paquetes que cumplen la condición.
+     */
     public int contarPaquetesConPrioridadMinima(
             Prioridad prioridadMinima
     ) {
@@ -292,6 +411,15 @@ public class QuindioExpress {
         );
     }
 
+    /**
+     * Cuenta recursivamente los paquetes que cumplen
+     * con la prioridad mínima indicada.
+     *
+     * @param paquetes lista de paquetes que se recorre.
+     * @param indice posición actual.
+     * @param prioridadMinima prioridad mínima requerida.
+     * @return cantidad de paquetes que cumplen la condición.
+     */
     private int contarPrioridadRecursivo(
             List<Paquete> paquetes,
             int indice,
@@ -313,8 +441,13 @@ public class QuindioExpress {
         );
     }
 
-    //Divide y venceras
+    // Divide y vencerás
 
+    /**
+     * Obtiene el paquete de mayor peso utilizando divide y vencerás.
+     *
+     * @return paquete de mayor peso o null si no hay paquetes.
+     */
     public Paquete obtenerPaqueteDeMayorPeso() {
         if (ordenRegistro.isEmpty()) {
             return null;
@@ -327,6 +460,15 @@ public class QuindioExpress {
         );
     }
 
+    /**
+     * Divide la lista en dos partes, encuentra el paquete más pesado
+     * de cada parte y compara los resultados.
+     *
+     * @param paquetes lista de paquetes que se analiza.
+     * @param inicio índice inicial del segmento.
+     * @param fin índice final del segmento.
+     * @return paquete de mayor peso del segmento.
+     */
     private Paquete mayorPesoDivideVenceras(
             List<Paquete> paquetes,
             int inicio,
@@ -356,6 +498,13 @@ public class QuindioExpress {
 
     // Repartidores
 
+    /**
+     * Busca un repartidor disponible que pertenezca
+     * a la zona de destino indicada.
+     *
+     * @param destino zona requerida.
+     * @return repartidor disponible o null si no existe.
+     */
     public Repartidor buscarRepartidorDisponible(Zona destino) {
         if (destino == null) {
             return null;
@@ -371,8 +520,15 @@ public class QuindioExpress {
         return null;
     }
 
-    //Asignacion
+    // Asignación
 
+    /**
+     * Asigna un paquete a un repartidor y lo retira de las
+     * colas de pendientes.
+     *
+     * @param paquete paquete que se asignará.
+     * @param repartidor repartidor que realizará la entrega.
+     */
     private void asignarPaquete(
             Paquete paquete,
             Repartidor repartidor
@@ -416,6 +572,12 @@ public class QuindioExpress {
         );
     }
 
+    /**
+     * Despacha el siguiente paquete según su prioridad,
+     * si hay un repartidor disponible para su destino.
+     *
+     * @return paquete despachado o null si no puede despacharse.
+     */
     public Paquete despacharSiguientePorPrioridad() {
         Paquete paquete = paquetesPorPrioridad.peek();
 
@@ -440,8 +602,15 @@ public class QuindioExpress {
         return paquete;
     }
 
-    //Confirmacion de entrega
+    // Confirmación de entrega
 
+    /**
+     * Confirma la entrega de un paquete, lo registra en el historial
+     * y libera al repartidor asignado.
+     *
+     * @param codigo código del paquete entregado.
+     * @return true si se confirmó la entrega; false en caso contrario.
+     */
     public boolean confirmarEntrega(String codigo) {
         if (codigo == null) {
             return false;
@@ -474,6 +643,11 @@ public class QuindioExpress {
         return true;
     }
 
+    /**
+     * Libera un repartidor si no tiene entregas pendientes.
+     *
+     * @param identificacion identificación del repartidor.
+     */
     public void liberarRepartidor(String identificacion) {
         Repartidor repartidor =
                 repartidoresPorId.get(identificacion);
@@ -497,12 +671,20 @@ public class QuindioExpress {
         repartidor.setDisponible(true);
     }
 
-    //Historial
+    // Historial
 
+    /**
+     * Retorna la lista que contiene el historial de entregas.
+     *
+     * @return lista de paquetes entregados.
+     */
     public ListaSimple<Paquete> obtenerHistorialEntregas() {
         return historialEntregas;
     }
 
+    /**
+     * Muestra las entregas confirmadas en el orden de registro.
+     */
     public void mostrarHistorialEntregas() {
         if (historialEntregas.estaVacia()) {
             System.out.println(

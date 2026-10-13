@@ -1,6 +1,10 @@
 package co.edu.uniquindio;
 
-
+/**
+ * Representa un paquete con su código, destino, peso, prioridad
+ * y tiempo estimado. Valida los datos al crearse y permite
+ * comparar paquetes por su código.
+ */
 public class Paquete implements Comparable<Paquete> {
 
     private final String codigo;
@@ -9,6 +13,15 @@ public class Paquete implements Comparable<Paquete> {
     private final Prioridad prioridad;
     private final int tiempoEstimado;
 
+    /**
+     * Crea un paquete y valida que sus datos sean correctos.
+     *
+     * @param codigo código identificador del paquete.
+     * @param destino zona de destino del paquete.
+     * @param peso peso del paquete.
+     * @param prioridad prioridad asignada al paquete.
+     * @param tiempoEstimado tiempo estimado de entrega.
+     */
     public Paquete(String codigo, Zona destino, double peso,
                    Prioridad prioridad, int tiempoEstimado) {
 
@@ -55,11 +68,20 @@ public class Paquete implements Comparable<Paquete> {
         return tiempoEstimado;
     }
 
+    /**
+     * Compara dos paquetes según sus códigos.
+     *
+     * @param otro paquete con el que se realiza la comparación.
+     * @return resultado de la comparación alfabética de los códigos.
+     */
     @Override
     public int compareTo(Paquete otro) {
         return this.codigo.compareTo(otro.codigo);
     }
 
+    /**
+     * Retorna una representación textual de los datos del paquete.
+     */
     @Override
     public String toString() {
         return "Paquete{" +

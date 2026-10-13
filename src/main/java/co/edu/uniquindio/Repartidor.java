@@ -1,7 +1,9 @@
 package co.edu.uniquindio;
 
-
-
+/**
+ * Representa un repartidor con su identificación, nombre,
+ * zona asignada y estado de disponibilidad.
+ */
 public class Repartidor {
 
     private final String identificacion;
@@ -9,6 +11,14 @@ public class Repartidor {
     private final Zona zona;
     private boolean disponible;
 
+    /**
+     * Crea un repartidor y valida sus datos.
+     * Inicialmente, el repartidor queda disponible.
+     *
+     * @param identificacion identificación del repartidor.
+     * @param nombre nombre del repartidor.
+     * @param zona zona asignada al repartidor.
+     */
     public Repartidor(String identificacion, String nombre,
                       Zona zona) {
 
@@ -44,10 +54,18 @@ public class Repartidor {
         return disponible;
     }
 
+    /**
+     * Actualiza el estado de disponibilidad del repartidor.
+     *
+     * @param disponible indica si el repartidor está disponible.
+     */
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
+    /**
+     * Retorna una representación textual de los datos del repartidor.
+     */
     @Override
     public String toString() {
         return "Repartidor{" +
